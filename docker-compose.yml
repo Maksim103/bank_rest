@@ -1,9 +1,30 @@
-# 
-# docker-compose.yml — определяет сервисы для разработки и тестирования.
+services:
+  mysql-db:
+    image: mysql:8.4.11
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    entrypoint: >
+      sh -c "
+      echo '[client]' > /root/.my.cnf &&
+      echo 'user=root' >> /root/.my.cnf &&
+      echo 'password=$$MYSQL_ROOT_PASSWORD' >> /root/.my.cnf &&
+      chmod 600 /root/.my.cnf &&
+      exec /usr/local/bin/docker-entrypoint.sh mysqld
+      "
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
-Что нужно сделать:
-  - Настроить сервисы для:
-      - PostgreSQL (или MySQL) с начальной базой.
-      - Приложения Spring Boot (если нужно).
-  - Открыть нужные порты (например, 5432, 8080).
-  - Настроить volume для хранения данных БД.
+volumes:
+  mysql_data:
