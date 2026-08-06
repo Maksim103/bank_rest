@@ -1,4 +1,6 @@
 spring:
+  jpa:
+    open-in-view: false
   liquibase:
     enabled: true
     change-log: classpath:/db/migration/db.changelog-master.yaml
