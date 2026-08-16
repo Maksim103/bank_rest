@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/migration/changesets/001-create-users-table.yaml
   - include:
       file: db/migration/changesets/002-create-cards-table.yaml
+  - include:
+      file: db/migration/changesets/003-add-is-deleted-column-to-cards.yaml
