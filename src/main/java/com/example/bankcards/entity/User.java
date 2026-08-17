@@ -9,8 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"password", "cards"})
 @Entity
@@ -28,7 +26,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role", unique = true)
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -36,6 +34,16 @@ public class User {
                 fetch = FetchType.LAZY,
                 cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE})
     private List<Card> cards = new ArrayList<>();
+
+    public User() {
+
+    }
+
+    public User(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     public void addCard(Card card) {
         if (!cards.contains(card)){
