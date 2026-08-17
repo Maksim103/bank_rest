@@ -11,8 +11,6 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"cardNumber"})
 @SQLDelete(sql = "UPDATE cards SET is_deleted = true WHERE id = ?")
@@ -29,8 +27,8 @@ public class Card {
     @Column(name = "card_number")
     private String cardNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
     @Column(name = "expiration_date")
@@ -45,4 +43,17 @@ public class Card {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public Card() {
+
+    }
+
+    public Card(String cardNumber, User owner, LocalDate expirationDate, CardStatus cardStatus, BigDecimal balance, boolean isDeleted) {
+        this.cardNumber = cardNumber;
+        this.owner = owner;
+        this.expirationDate = expirationDate;
+        this.cardStatus = cardStatus;
+        this.balance = balance;
+        this.isDeleted = isDeleted;
+    }
 }
