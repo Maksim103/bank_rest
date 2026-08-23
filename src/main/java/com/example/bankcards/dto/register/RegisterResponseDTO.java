@@ -1,4 +1,4 @@
-package com.example.bankcards.dto;
+package com.example.bankcards.dto.register;
 
 import com.example.bankcards.entity.enums.Role;
 import lombok.AllArgsConstructor;
