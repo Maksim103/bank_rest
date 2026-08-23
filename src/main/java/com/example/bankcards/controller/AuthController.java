@@ -1,8 +1,9 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.RegisterRequestDTO;
-import com.example.bankcards.dto.RegisterResponseDTO;
-import com.example.bankcards.exception.UsernameAlreadyExistsException;
+import com.example.bankcards.dto.login.LoginRequestDTO;
+import com.example.bankcards.dto.login.LoginResponseDTO;
+import com.example.bankcards.dto.register.RegisterRequestDTO;
+import com.example.bankcards.dto.register.RegisterResponseDTO;
 import com.example.bankcards.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-public class RegistrationController {
+public class AuthController {
 
     private final UserService userService;
 
-    public RegistrationController(UserService userService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
     }
 
