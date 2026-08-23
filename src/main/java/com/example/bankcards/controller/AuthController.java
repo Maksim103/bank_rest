@@ -24,11 +24,13 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponseDTO> registerUser(@RequestBody @Valid RegisterRequestDTO registerRequestDTO) {
-        try {
-            RegisterResponseDTO responseDTO = userService.registerUser(registerRequestDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-        } catch (UsernameAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        RegisterResponseDTO responseDTO = userService.registerUser(registerRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        LoginResponseDTO response = userService.loginUser(loginRequestDTO);
+        return ResponseEntity.ok(response);
     }
 }
