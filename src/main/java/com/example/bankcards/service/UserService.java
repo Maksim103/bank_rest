@@ -4,6 +4,7 @@ import com.example.bankcards.dto.RegisterRequestDTO;
 import com.example.bankcards.dto.RegisterResponseDTO;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.Role;
+import com.example.bankcards.exception.InvalidCredentialsException;
 import com.example.bankcards.exception.UsernameAlreadyExistsException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.JwtService;
