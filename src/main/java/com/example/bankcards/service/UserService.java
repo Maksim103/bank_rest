@@ -37,4 +37,20 @@ public class UserService {
 
         return new RegisterResponseDTO(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
     }
+
+    public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
+        String username = loginRequestDTO.getUsername();
+        String password = loginRequestDTO.getPassword();
+
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password"));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new InvalidCredentialsException("Invalid username or password");
+        }
+
+        String token = jwtService.generateToken(user.getId(), user.getUsername(), user.getRole());
+
+        return new LoginResponseDTO(token);
+    }
 }
