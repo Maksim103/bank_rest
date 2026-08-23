@@ -1,7 +1,9 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.RegisterRequestDTO;
-import com.example.bankcards.dto.RegisterResponseDTO;
+import com.example.bankcards.dto.login.LoginRequestDTO;
+import com.example.bankcards.dto.login.LoginResponseDTO;
+import com.example.bankcards.dto.register.RegisterRequestDTO;
+import com.example.bankcards.dto.register.RegisterResponseDTO;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.Role;
 import com.example.bankcards.exception.InvalidCredentialsException;
