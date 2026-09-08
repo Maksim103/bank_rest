@@ -1,62 +1,75 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.login.LoginRequestDTO;
-import com.example.bankcards.dto.login.LoginResponseDTO;
-import com.example.bankcards.dto.register.RegisterRequestDTO;
-import com.example.bankcards.dto.register.RegisterResponseDTO;
+import com.example.bankcards.dto.UserResponseDTO;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.Role;
-import com.example.bankcards.exception.InvalidCredentialsException;
-import com.example.bankcards.exception.UsernameAlreadyExistsException;
+import com.example.bankcards.exception.UserNotFoundException;
 import com.example.bankcards.repository.UserRepository;
-import com.example.bankcards.security.JwtService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
     }
 
-    public RegisterResponseDTO registerUser(RegisterRequestDTO registerRequestDTO) {
-        String username = registerRequestDTO.getUsername();
-        String password = registerRequestDTO.getPassword();
-
-        if (userRepository.existsUserByUsername(username)) {
-            throw new UsernameAlreadyExistsException("Username already exists");
-        }
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(Role.USER);
-
-        User savedUser = userRepository.save(user);
-
-        return new RegisterResponseDTO(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
+    @Transactional(readOnly = true)
+    public Page<UserResponseDTO> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(user -> new UserResponseDTO(user.getId(), user.getUsername(), user.getRole()));
     }
 
-    public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
-        String username = loginRequestDTO.getUsername();
-        String password = loginRequestDTO.getPassword();
+    @Transactional(readOnly = true)
+    public UserResponseDTO getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(user -> new UserResponseDTO(user.getId(), user.getUsername(), user.getRole()))
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
 
-        User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password"));
+    @Transactional
+    public UserResponseDTO changeUserRole(Long id, Role newRole) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new InvalidCredentialsException("Invalid username or password");
+        if (user.getRole() == newRole) {
+            throw new IllegalArgumentException("User already has the role: " + newRole);
         }
 
-        String token = jwtService.generateToken(user.getId(), user.getUsername(), user.getRole());
+        if (user.getRole().equals(Role.ADMIN)
+                && newRole.equals(Role.USER)
+                && userRepository.countUserByRole(Role.ADMIN) <= 1) {
+            throw new IllegalStateException("Cannot change role. There must be at least one admin user.");
+        }
 
-        return new LoginResponseDTO(token);
+        user.setRole(newRole);
+
+        return new UserResponseDTO(user.getId(), user.getUsername(), user.getRole());
+    }
+
+    @Transactional
+    public void deleteUser(Long targetId, Long currentUserId) {
+        if (targetId.equals(currentUserId)) {
+            throw new IllegalArgumentException("Admin cannot delete themselves");
+        }
+
+        User user = userRepository.findById(targetId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (userRepository.existsUserByIdAndCardsNotEmpty(targetId)) {
+            throw new IllegalStateException("Cannot delete user with associated cards");
+        }
+
+        if (user.getRole().equals(Role.ADMIN)
+                && userRepository.countUserByRole(Role.ADMIN) <= 1) {
+            throw new IllegalStateException("Cannot delete the last admin user");
+        }
+
+        userRepository.deleteById(targetId);
     }
 }
