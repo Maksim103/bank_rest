@@ -1,6 +1,6 @@
 package com.example.bankcards.util;
 
-import com.example.bankcards.dto.CardResponseDTO;
+import com.example.bankcards.dto.card.CardResponseDTO;
 import com.example.bankcards.entity.Card;
 import org.springframework.stereotype.Component;
 
