@@ -1,7 +1,7 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.CardRequestDTO;
-import com.example.bankcards.dto.CardResponseDTO;
+import com.example.bankcards.dto.card.CardRequestDTO;
+import com.example.bankcards.dto.card.CardResponseDTO;
 import com.example.bankcards.service.CardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
