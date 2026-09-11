@@ -7,7 +7,7 @@ import com.example.bankcards.dto.register.RegisterResponseDTO;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.Role;
 import com.example.bankcards.exception.InvalidCredentialsException;
-import com.example.bankcards.exception.UsernameAlreadyExistsException;
+import com.example.bankcards.exception.user.UsernameAlreadyExistsException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.jwt.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
