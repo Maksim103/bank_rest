@@ -40,9 +40,10 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/api/users/**").hasRole( "ADMIN")
+                        .requestMatchers("/api/admin/block-requests/**").hasRole("ADMIN")
+                        .requestMatchers("/api/user/cards/**").hasRole("USER")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/cards/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
 
