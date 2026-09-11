@@ -10,16 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CardService {
+public class CardUserService {
 
     private final CardRepository cardRepository;
     private final CardMapper cardMapper;
-    private final CardAdminService cardAdminService;
 
-    public CardService(CardRepository cardRepository, CardMapper cardMapper, CardAdminService cardAdminService) {
+    public CardUserService(CardRepository cardRepository, CardMapper cardMapper) {
         this.cardRepository = cardRepository;
         this.cardMapper = cardMapper;
-        this.cardAdminService = cardAdminService;
     }
 
     public List<CardResponseDTO> getCards(Long ownerId) {
