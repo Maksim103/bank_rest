@@ -1,11 +1,11 @@
-package com.example.bankcards.service;
+package com.example.bankcards.service.card;
 
 import com.example.bankcards.dto.card.CardResponseDTO;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.CardStatus;
-import com.example.bankcards.exception.CardNotFoundException;
-import com.example.bankcards.exception.UserNotFoundException;
+import com.example.bankcards.exception.card.CardNotFoundException;
+import com.example.bankcards.exception.user.UserNotFoundException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.CardMapper;
@@ -14,17 +14,17 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 @Service
-public class CardService {
+public class CardAdminService {
 
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardMapper cardMapper;
     private final CardGenerator cardGenerator;
 
-    public CardService(CardRepository cardRepository,
-                       UserRepository userRepository,
-                       CardMapper cardMapper,
-                       CardGenerator cardGenerator) {
+    public CardAdminService(CardRepository cardRepository,
+                            UserRepository userRepository,
+                            CardMapper cardMapper,
+                            CardGenerator cardGenerator) {
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
         this.cardMapper = cardMapper;

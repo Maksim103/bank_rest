@@ -1,4 +1,4 @@
-package com.example.bankcards.service;
+package com.example.bankcards.service.card;
 
 import org.springframework.stereotype.Service;
 
