@@ -3,7 +3,7 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.UserResponseDTO;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.Role;
-import com.example.bankcards.exception.UserNotFoundException;
+import com.example.bankcards.exception.user.UserNotFoundException;
 import com.example.bankcards.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
