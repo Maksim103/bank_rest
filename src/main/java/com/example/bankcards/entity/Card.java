@@ -1,6 +1,7 @@
 package com.example.bankcards.entity;
 
 import com.example.bankcards.entity.enums.CardStatus;
+import com.example.bankcards.util.CardNumberConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -23,6 +24,7 @@ public class Card {
     @Column(name = "id")
     private Long id;
 
+    @Convert(converter = CardNumberConverter.class)
     @EqualsAndHashCode.Include
     @Column(name = "card_number")
     private String cardNumber;
