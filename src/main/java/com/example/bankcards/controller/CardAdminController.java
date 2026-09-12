@@ -24,6 +24,12 @@ public class CardAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
+    @GetMapping("/{cardId}")
+    public ResponseEntity<CardResponseDTO> getCardById(@PathVariable Long cardId) {
+        CardResponseDTO responseDTO = cardAdminService.getCardById(cardId);
+        return ResponseEntity.ok(responseDTO);
+    }
+
     @PutMapping("/block/{cardId}")
     public ResponseEntity<CardResponseDTO> blockCard(@PathVariable Long cardId) {
         return ResponseEntity.ok(cardAdminService.blockCard(cardId));
