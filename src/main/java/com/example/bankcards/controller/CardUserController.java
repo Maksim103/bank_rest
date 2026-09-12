@@ -4,7 +4,7 @@ import com.example.bankcards.dto.BlockRequestResponseDTO;
 import com.example.bankcards.dto.card.CardResponseDTO;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.service.BlockRequestService;
-import com.example.bankcards.service.card.CardService;
+import com.example.bankcards.service.card.CardUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,18 +17,18 @@ import java.util.List;
 @RequestMapping("/api/user/cards")
 public class CardUserController {
 
-    private final CardService cardService;
+    private final CardUserService cardUserService;
     private final BlockRequestService blockRequestService;
 
-    public CardUserController(CardService cardService, BlockRequestService blockRequestService) {
-        this.cardService = cardService;
+    public CardUserController(CardUserService cardUserService, BlockRequestService blockRequestService) {
+        this.cardUserService = cardUserService;
         this.blockRequestService = blockRequestService;
     }
 
     @GetMapping
     public ResponseEntity<List<CardResponseDTO>> getAllCards(@AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = (User) userDetails;
-        List<CardResponseDTO> cards = cardService.getCards(currentUser.getId());
+        List<CardResponseDTO> cards = cardUserService.getCards(currentUser.getId());
 
         return ResponseEntity.ok(cards);
     }
@@ -37,7 +37,7 @@ public class CardUserController {
     public ResponseEntity<CardResponseDTO> getCardById(@AuthenticationPrincipal UserDetails userDetails,
                                                        @PathVariable Long cardId) {
         User currentUser = (User) userDetails;
-        CardResponseDTO card = cardService.getCardById(cardId, currentUser.getId());
+        CardResponseDTO card = cardUserService.getCardById(cardId, currentUser.getId());
         return ResponseEntity.ok(card);
     }
 
