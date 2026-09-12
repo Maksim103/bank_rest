@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/migration/changesets/003-add-is-deleted-column-to-cards.yaml
   - include:
       file: db/migration/changesets/004-create-block_requests-table.yaml
+  - include:
+      file: db/migration/changesets/005-extend-card_number-length-in-cards.yaml
