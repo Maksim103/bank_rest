@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: extend-card_number-length-in-cards
+      author: maksim.zhigarev
+      changes:
+        - modifyDataType:
+            tableName: cards
+            columnName: card_number
+            newDataType: varchar(256)
