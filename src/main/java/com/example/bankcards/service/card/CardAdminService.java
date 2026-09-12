@@ -9,6 +9,7 @@ import com.example.bankcards.exception.user.UserNotFoundException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.CardMapper;
+import com.example.bankcards.util.CardNumberConverter;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -49,6 +50,13 @@ public class CardAdminService {
         Card savedCard = cardRepository.save(newCard);
 
         return cardMapper.toCardResponseDTO(savedCard);
+    }
+
+    public CardResponseDTO getCardById(Long cardId) {
+        Card card = cardRepository.findById(cardId).orElseThrow(() ->
+                new CardNotFoundException("Card with ID " + cardId + " does not exist"));
+
+        return cardMapper.toCardResponseDTO(card);
     }
 
     public CardResponseDTO blockCard(Long cardId) {
